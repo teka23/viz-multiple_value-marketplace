@@ -1,12 +1,12 @@
-project_name: "viz-grouped_card-marketplace"
+project_name: "viz-multiple_value-marketplace"
 
 constant: VIS_LABEL {
-  value: "Grouped Card"
+  value: "Multiple Value"
   export: override_optional
 }
 
 constant: VIS_ID {
-  value: "grouped_card-marketplace"
+  value: "multiple_value-marketplace"
   export:  override_optional
 }
 
