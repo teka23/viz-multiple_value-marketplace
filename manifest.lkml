@@ -12,6 +12,6 @@ constant: VIS_ID {
 
 visualization: {
   id: "@{VIS_ID}"
-  url: "https://looker-custom-viz-a.lookercdn.com/master/grouped_card.js"
+  url: "https://looker-custom-viz-a.lookercdn.com/2.1.6/grouped_card.js"
   label: "@{VIS_LABEL}"
 }
