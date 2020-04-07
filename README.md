@@ -11,7 +11,9 @@ Great! Marketplace content -- including visualizations -- were designed for cont
     ```
     yarn
     ```
-4.  **Compile your code**
+2. **Make changes to the source code***
+
+3.  **Compile your code**
 
     You need to compile your react code, let's run:
     ```
