@@ -17,7 +17,7 @@
     ```
     Your compiled code can be found at `./dist`
 
-**`/dist`**: The directory containing the visualization's minified distribution file. 
+**`multiple_value.js`**: This visualization's minified distribution file. 
 
 **`.babelrc`**: A configuration file for the Babel jsx -> js compiler.
 
