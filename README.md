@@ -11,7 +11,7 @@ Great! Marketplace content -- including visualizations -- were designed for cont
     ```
     yarn
     ```
-2. **Make changes to the source code***
+2. **Make changes to the source code**
 
 3.  **Compile your code**
 
