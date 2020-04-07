@@ -1,7 +1,7 @@
 project_name: "viz-multiple_value-marketplace"
 
 constant: VIS_LABEL {
-  value: "Multiple Value"
+  value: "Multiple Value2"
   export: override_optional
 }
 
@@ -12,6 +12,6 @@ constant: VIS_ID {
 
 visualization: {
   id: "@{VIS_ID}"
-  url: "https://looker-custom-viz-a.lookercdn.com/master/grouped_card.js"
+  file: "/dist/multiple_value.js"
   label: "@{VIS_LABEL}"
 }
