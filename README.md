@@ -19,7 +19,7 @@ Great! Marketplace content -- including visualizations -- were designed for cont
     ```
     yarn build
     ```
-    Protip: Webpack can detect changes and build automatically
+    Recommended: Webpack can detect changes and build automatically
      ```
     yarn watch
     ```
