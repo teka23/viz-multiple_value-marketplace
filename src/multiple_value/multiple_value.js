@@ -51,7 +51,7 @@ const DataPointValue = styled.div`
     color: ${props => props.color};
     text-decoration: none;
   }
-  a.drillable-link:hover {
+  :hover {
     text-decoration: underline;
   }
 `
@@ -69,9 +69,6 @@ const ComparisonDataPoint = styled.div`
   a.drillable-link {
     color: #a5a6a1;
     text-decoration: none;
-  }
-  a.drillable-link:hover {
-    text-decoration: underline;
   }
 `
 
@@ -97,11 +94,17 @@ const ComparisonPercentageChange = styled.div`
   display: inline-block;
   color: ${props => props.value >= 0 ? 'green' : 'red'}
   padding-right: 5px;
+  :hover {
+    text-decoration: underline;
+  }
 `
 const ComparisonSimpleValue = styled.div`
   font-weight: 100;
   display: inline-block;
   padding-right: 5px;
+  :hover {
+    text-decoration: underline;
+  }
 `
 const ComparisonProgressBar = styled.div`
   position: relative;
@@ -160,6 +163,17 @@ class MultipleValue extends React.PureComponent {
     return Math.round(this.getWindowSize() * multiplier);
   }
 
+  handleClick = (cell, event) => {
+    console.log(cell.link)
+    cell.link !== undefined ? LookerCharts.Utils.openDrillMenu({
+         links: cell.link,
+         event: event
+    }) : LookerCharts.Utils.openDrillMenu({
+         links: [],
+         event: event
+    });
+  }
+
   recalculateSizing = () => {
     const groupingLayout = window.innerWidth >= 768 ? 'horizontal' : 'vertical';
     // var font_size = this.calculateFontSize();
@@ -199,14 +213,18 @@ class MultipleValue extends React.PureComponent {
               progressPerc = progressPerc > 100 ? 100 : progressPerc
             }
             return (
-              <DataPointGroup comparisonPlacement={compDataPoint && config[`comparison_label_placement_${compDataPoint.name}`]} key={`group_${dataPoint.name}`}>
+
+              <DataPointGroup comparisonPlacement={compDataPoint && config[`comparison_label_placement_${compDataPoint.name}`]} 
+              key={`group_${dataPoint.name}`}>
+
                 <DataPoint titlePlacement={config[`title_placement_${dataPoint.name}`]}>
                   {config[`show_title_${dataPoint.name}`] === false ? null : (
                     <DataPointTitle color={config[`style_${dataPoint.name}`]}>
                       {config[`title_overrride_${dataPoint.name}`] || dataPoint.label}
                     </DataPointTitle>
                   )}
-                  <DataPointValue color={config[`style_${dataPoint.name}`]}>
+                  <DataPointValue color={config[`style_${dataPoint.name}`]}
+                  onClick={() => { this.handleClick(dataPoint, event) }}>
                     {dataPoint.formattedValue}
                   </DataPointValue>
                 </DataPoint>
@@ -214,12 +232,12 @@ class MultipleValue extends React.PureComponent {
                 {!compDataPoint ? null : (
                   <ComparisonDataPoint>
                     {config[`comparison_style_${compDataPoint.name}`] !== 'percentage_change' ? null : (
-                      <ComparisonPercentageChange value={percChange}>
+                      <ComparisonPercentageChange value={percChange} onClick={() => { this.handleClick(compDataPoint, event) }}>
                         {percChange >= 0 ? <UpArrow /> : <DownArrow />}
                         {percChange >= 0 ? `+${percChange}` : percChange}%
                       </ComparisonPercentageChange>
                     )}
-                    {config[`comparison_style_${compDataPoint.name}`] !== 'value' ? null : <ComparisonSimpleValue>{compDataPoint.formattedValue}</ComparisonSimpleValue>}
+                    {config[`comparison_style_${compDataPoint.name}`] !== 'value' ? null : <ComparisonSimpleValue onClick={() => { this.handleClick(compDataPoint, event) }}>{compDataPoint.formattedValue}</ComparisonSimpleValue>}
                     {config[`comparison_style_${compDataPoint.name}`] !== 'calculate_progress' &&
                     config[`comparison_style_${compDataPoint.name}`] !== 'calculate_progress_perc' ? null : (
                       <ComparisonProgressBar background={config[`style_${dataPoint.name}`]}>
@@ -228,14 +246,14 @@ class MultipleValue extends React.PureComponent {
                           percentage={progressPerc}
                         />
                           {config[`comparison_show_label_${compDataPoint.name}`] === false ? null : (
-                            <ComparisonProgressBarLabel>
+                            <ComparisonProgressBarLabel><div onClick={() => { this.handleClick(compDataPoint, event) }}>
                               {config[`comparison_style_${compDataPoint.name}`] === 'calculate_progress' ? null :
                                 <React.Fragment>
                                   {`${progressPerc}% of ${compDataPoint.formattedValue} `}
                                 </React.Fragment>
                               }
                               {config[`comparison_label_${compDataPoint.name}`] || compDataPoint.label}
-                            </ComparisonProgressBarLabel>
+                            </div></ComparisonProgressBarLabel>
                           )}
                       </ComparisonProgressBar>
                     )}
@@ -253,6 +271,7 @@ class MultipleValue extends React.PureComponent {
         }
       </DataPointsWrapper>
     )
+
   }
 }
 

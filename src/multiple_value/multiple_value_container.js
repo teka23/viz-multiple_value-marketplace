@@ -43,8 +43,9 @@ looker.plugins.visualizations.add({
     this.clearErrors();
 
     const measures = [].concat(
+      queryResponse.fields.dimensions,
       queryResponse.fields.measures,
-      queryResponse.fields.table_calculations.filter(calc => calc.measure === true)
+      queryResponse.fields.table_calculations
     )
 
     // Throw some errors and exit if the shape of the data isn't what this chart needs
@@ -208,6 +209,7 @@ looker.plugins.visualizations.add({
       }
       return fullValue;
     })
+
     // Finally update the state with our new data
     this.chart = ReactDOM.render(
       <MultipleValue
