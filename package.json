@@ -41,5 +41,8 @@
   },
   "resolutions": {
     "js-yaml": "3.13.1"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.7"
   }
 }

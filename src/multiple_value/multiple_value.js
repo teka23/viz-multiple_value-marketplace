@@ -10,8 +10,11 @@ const DataPointsWrapper = styled.div`
   align-items: center;
   justify-content: space-around;
   margin: 10px;
+  margin-top: ${props => props.layout === 'horizontal' ? '90px' : '0px'}
   height: 100%;
 `
+
+
 
 const dataPointGroupDirectionDict = {
   'below': 'column',
