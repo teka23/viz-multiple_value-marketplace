@@ -14,8 +14,6 @@ const DataPointsWrapper = styled.div`
   height: 100%;
 `
 
-
-
 const dataPointGroupDirectionDict = {
   'below': 'column',
   'above': 'column-reverse',
