@@ -8,13 +8,10 @@ const DataPointsWrapper = styled.div`
   display: flex;
   flex-direction: ${props => props.layout === 'horizontal' ? 'row' : 'column'};
   align-items: center;
-  justify-content: space-around;
+  justify-content: end;
   margin: 10px;
-  margin-top: ${props => props.layout === 'horizontal' ? '90px' : '0px'}
   height: 100%;
 `
-
-
 
 const dataPointGroupDirectionDict = {
   'below': 'column',
@@ -198,10 +195,11 @@ class MultipleValue extends React.PureComponent {
   render() {
     const {config, data} = this.props;
     let CONFIG = this.props.config;
+    
 
     return (
       <DataPointsWrapper
-        layout={this.state.groupingLayout}
+        layout={config['orientation'] === 'auto' ? this.state.groupingLayout : config['orientation']}
         font={config['grouping_font']}
         style={{fontSize: `${this.state.fontSize}px`}}
       >
