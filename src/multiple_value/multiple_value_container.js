@@ -230,10 +230,6 @@ looker.plugins.visualizations.add({
       <MultipleValue
         config={config}
         data={fullValues}
-        window={{
-          'height' : element.clientHeight,
-          'width': element.clientWidth
-        }}
       />,
       element
     );
