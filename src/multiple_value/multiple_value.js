@@ -8,7 +8,6 @@ const DataPointsWrapper = styled.div`
   display: flex;
   flex-direction: ${props => props.layout === 'horizontal' ? 'row' : 'column'};
   align-items: center;
-  justify-content: space-around;
   margin: 10px;
   height: 100%;
 `
@@ -25,6 +24,7 @@ const DataPointGroup = styled.div`
   text-align: center;
   width: 100%;
   display: flex;
+  flex-shrink: ${props => props.layout === 'horizontal' ? 'auto' : 0 };
   flex-direction: ${props => props.comparisonPlacement ? dataPointGroupDirectionDict[props.comparisonPlacement] : 'column'};
   align-items: center;
   justify-content: center;
@@ -32,6 +32,7 @@ const DataPointGroup = styled.div`
 
 const DataPoint = styled.div`
   display: flex;
+  flex-shrink: ${props => props.layout === 'horizontal' ? 'auto' : 0 };
   flex-direction: ${props => props.titlePlacement === 'above' ? 'column' : 'column-reverse'};
   flex: 1;
 `
@@ -155,7 +156,7 @@ class MultipleValue extends React.PureComponent {
   }
 
   getWindowSize = () => {
-    return window.innerWidth > window.innerHeight ? window.innerWidth : window.innerHeight;
+    return Math.max(window.innerWidth, window.innerHeight);
   }
 
   calculateFontSize = () => {
@@ -175,16 +176,17 @@ class MultipleValue extends React.PureComponent {
   }
 
   recalculateSizing = () => {
+    const EM = 16;
     const groupingLayout = window.innerWidth >= 768 ? 'horizontal' : 'vertical';
     // var font_size = this.calculateFontSize();
 
     let CONFIG = this.props.config;
 
-    // console.log(CONFIG.font_size_main);
+    console.log(CONFIG.font_size_main);
 
-    var font_size = CONFIG.font_size_main != "" ? CONFIG.font_size_main : this.calculateFontSize();
+    var font_size = (CONFIG.font_size_main != "" ? CONFIG.font_size_main : this.calculateFontSize());
+    font_size = font_size / EM;
 
-    // console.log(font_size);
 
     this.setState({
       fontSize: font_size,
@@ -195,12 +197,13 @@ class MultipleValue extends React.PureComponent {
   render() {
     const {config, data} = this.props;
     let CONFIG = this.props.config;
+    
 
     return (
       <DataPointsWrapper
-        layout={this.state.groupingLayout}
+        layout={config['orientation'] === 'auto' ? this.state.groupingLayout : config['orientation']}
         font={config['grouping_font']}
-        style={{fontSize: `${this.state.fontSize}px`}}
+        style={{fontSize: `${this.state.fontSize}em`}}
       >
         {data
           .map((dataPoint, index) => {
@@ -214,8 +217,11 @@ class MultipleValue extends React.PureComponent {
             }
             return (
 
-              <DataPointGroup comparisonPlacement={compDataPoint && config[`comparison_label_placement_${compDataPoint.name}`]} 
-              key={`group_${dataPoint.name}`}>
+              <DataPointGroup 
+                comparisonPlacement={compDataPoint && config[`comparison_label_placement_${compDataPoint.name}`]} 
+                key={`group_${dataPoint.name}`} 
+                layout={config['orientation'] === 'auto' ? this.state.groupingLayout : config['orientation']}
+              >
 
                 <DataPoint titlePlacement={config[`title_placement_${dataPoint.name}`]}>
                   {config[`show_title_${dataPoint.name}`] === false ? null : (
@@ -223,8 +229,11 @@ class MultipleValue extends React.PureComponent {
                       {config[`title_overrride_${dataPoint.name}`] || dataPoint.label}
                     </DataPointTitle>
                   )}
-                  <DataPointValue color={config[`style_${dataPoint.name}`]}
-                  onClick={() => { this.handleClick(dataPoint, event) }}>
+                  <DataPointValue 
+                    color={config[`style_${dataPoint.name}`]}
+                    onClick={() => { this.handleClick(dataPoint, event) }}
+                    layout={config['orientation'] === 'auto' ? this.state.groupingLayout : config['orientation']}
+                  >
                     {dataPoint.formattedValue}
                   </DataPointValue>
                 </DataPoint>

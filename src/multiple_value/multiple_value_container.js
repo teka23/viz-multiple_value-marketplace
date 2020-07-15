@@ -12,6 +12,21 @@ const baseOptions = {
     section: 'Style',
     default: "",
     order: 0,
+    display_size: 'half'
+  },
+  orientation: {
+    label: "Orientation",
+    type: 'string',
+    section: 'Style',
+    display: 'select',
+    values: [
+      {'Auto': 'auto'},
+      {'Vertical': 'vertical'},
+      {'Horizontal': 'horizontal'}
+    ],
+    default: 'auto',
+    order: 0,
+    display_size: 'half'
   }
 }
 
