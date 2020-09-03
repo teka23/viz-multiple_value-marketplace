@@ -27,7 +27,7 @@ const baseOptions = {
     default: 'auto',
     order: 0,
     display_size: 'half'
-  }
+  },
 }
 
 let currentOptions = {}
@@ -96,6 +96,15 @@ looker.plugins.visualizations.add({
     
     dataPoints.forEach((dataPoint, index) => {
       //Style -- apply to all
+      if (config.orientation === "horizontal") {
+        options.dividers = {
+          type: 'boolean',
+          label: `Dividers between values?`,
+          default: false,
+          section: 'Style',
+          order: 1,
+        }
+      }
       if (config[`show_comparison_${dataPoint.name}`] !== true) {
         options[`style_${dataPoint.name}`] = {
           type: `string`,
@@ -169,7 +178,16 @@ looker.plugins.visualizations.add({
             label: `${dataPoint.label} - Show Label`,
             section: 'Comparison',
             default: true,
-            order: 10 * index + 2,
+            order: 10 * index + 3,
+          }
+          if (config[`comparison_style_${dataPoint.name}`] === "percentage_change") {
+            options[`pos_is_bad_${dataPoint.name}`] = {
+              type: 'boolean',
+              label: `Positive Values are Bad`,
+              section: 'Comparison',
+              default: false,
+              order: 10 * index + 2,
+            }
           }
           if (config[`comparison_show_label_${dataPoint.name}`]) {
             options[`comparison_label_${dataPoint.name}`] = {
@@ -177,7 +195,7 @@ looker.plugins.visualizations.add({
               label: `${dataPoint.label} - Label`,
               placeholder: dataPoint.label,
               section: 'Comparison',
-              order: 10 * index + 3,
+              order: 10 * index + 4,
             }
             options[`comparison_label_placement_${dataPoint.name}`] = {
               type: 'string',
@@ -191,7 +209,14 @@ looker.plugins.visualizations.add({
               ],
               default: 'below',
               section: 'Comparison',
-              order: 10 * index + 4,
+              order: 10 * index + 5,
+            }
+            options[`comp_value_format_${dataPoint.name}`] = {
+              type: 'string',
+              label: `Comparison Value Format`,
+              section: 'Comparison',
+              default: "",
+              order: 10 * index + 6
             }
           }
         }
@@ -224,7 +249,6 @@ looker.plugins.visualizations.add({
       }
       return fullValue;
     })
-
     // Finally update the state with our new data
     this.chart = ReactDOM.render(
       <MultipleValue

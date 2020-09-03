@@ -9,6 +9,12 @@ var webpackConfig = {
   },
   devServer: {
     contentBase: './dist',
+    https: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+    },
   },
   output: {
     filename: "[name].js",
@@ -16,16 +22,28 @@ var webpackConfig = {
     library: "[name]",
     libraryTarget: "umd"
   },
-  resolve: {
-    extensions: [".js"],
-    modules: [path.join(__dirname, "../src"), "node_modules"]
-  },
-  plugins: [new UglifyJSPlugin()],
   module: {
     rules: [
-      { test: /\.(js|jsx)$/, use: "babel-loader"}
+      { test: /\.(js|jsx)$/, use: "babel-loader"},
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: 'file-loader',
+      },
     ]
   },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"]
+  },
+  plugins: [new UglifyJSPlugin()],
   stats: {}
 };
 
