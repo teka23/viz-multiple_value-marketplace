@@ -23,14 +23,17 @@ const dataPointGroupDirectionDict = {
 const DataPointGroup = styled.div`
   margin: 20px 5px;
   text-align: center;
-  border-right: ${props => props.dividers && 
-    props.layout === 'horizontal' && props.index < (props.total - 1) ? '.01vw solid #282828' : null};
   width: 100%;
   display: flex;
   flex-shrink: ${props => props.layout === 'horizontal' ? 'auto' : 0 };
   flex-direction: ${props => props.comparisonPlacement ? dataPointGroupDirectionDict[props.comparisonPlacement] : 'column'};
   align-items: center;
   justify-content: center;
+`
+const Divider = styled.div`
+  background-color: #282828;
+  height: 35vh;
+  width: 1px;
 `
 
 const DataPoint = styled.div`
@@ -103,7 +106,6 @@ class MultipleValue extends React.PureComponent {
   recalculateSizing = () => {
     const EM = 16;
     const groupingLayout = window.innerWidth >= 768 ? 'horizontal' : 'vertical';
-    // var font_size = this.calculateFontSize();
 
     let CONFIG = this.props.config;
 
@@ -140,13 +142,11 @@ class MultipleValue extends React.PureComponent {
               percChange = progressPerc - 100
             }
             return (
+              <>
               <DataPointGroup 
                 comparisonPlacement={compDataPoint && config[`comparison_label_placement_${compDataPoint.name}`]} 
                 key={`group_${dataPoint.name}`} 
                 layout={config['orientation'] === 'auto' ? this.state.groupingLayout : config['orientation']}
-                index={index}
-                total={data.length}
-                dividers={config['dividers']}
               >
                 <DataPoint titlePlacement={config[`title_placement_${dataPoint.name}`]}>
                   {config[`show_title_${dataPoint.name}`] === false ? null : (
@@ -171,7 +171,11 @@ class MultipleValue extends React.PureComponent {
                   progressPerc={progressPerc}
                   handleClick={this.handleClick}
                 />)}
-              </DataPointGroup>  
+              </DataPointGroup>
+              {config.dividers && config.orientation === 'horizontal' && index < (data.length - 1) &&
+              <Divider />
+              }
+              </>
             )
           })
         }

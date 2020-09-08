@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import isEqual from 'lodash/isEqual'
 import MultipleValue from './multiple_value'
-import {formatType, displayData} from '../common'
 import SSF from "ssf";
 
 const baseOptions = {
@@ -34,15 +33,10 @@ let currentOptions = {}
 let currentConfig = {}
 
 looker.plugins.visualizations.add({
-  // Id and Label are legacy properties that no longer have any function besides documenting
-  // what the visualization used to have. The properties are now set via the manifest
-  // form within the admin/visualizations page of Looker
   id: "multiple_value",
   label: "Multiple Value",
   options: baseOptions,
-  // Set up the initial state of the visualization
   create: function(element, config) {
-    // Render to the target element
     this.chart = ReactDOM.render(
       <MultipleValue
         config={{}}
@@ -52,9 +46,7 @@ looker.plugins.visualizations.add({
     );
 
   },
-  // Render in response to the data or settings changing
   updateAsync: function(data, element, config, queryResponse, details, done) {
-    // Clear any errors from previous updates
     this.clearErrors();
 
     const measures = [].concat(
@@ -63,7 +55,6 @@ looker.plugins.visualizations.add({
       queryResponse.fields.table_calculations
     )
 
-    // Throw some errors and exit if the shape of the data isn't what this chart needs
     if (measures.length == 0) {
       this.addError({title: "No Measures", message: "This chart requires measures"});
       return;
@@ -211,12 +202,16 @@ looker.plugins.visualizations.add({
               section: 'Comparison',
               order: 10 * index + 5,
             }
-            options[`comp_value_format_${dataPoint.name}`] = {
-              type: 'string',
-              label: `Comparison Value Format`,
-              section: 'Comparison',
-              default: "",
-              order: 10 * index + 6
+            if (config[`comparison_style_${dataPoint.name}`] === "value" ||
+                config[`comparison_style_${dataPoint.name}`] === "calculate_progress_perc") {
+              options[`comp_value_format_${dataPoint.name}`] = {
+                type: 'string',
+                label: `Comparison Value Format`,
+                placeholder: "Spreadsheet-style format code",
+                section: 'Comparison',
+                default: "",
+                order: 10 * index + 6
+              }
             }
           }
         }
@@ -249,7 +244,7 @@ looker.plugins.visualizations.add({
       }
       return fullValue;
     })
-    // Finally update the state with our new data
+
     this.chart = ReactDOM.render(
       <MultipleValue
         config={config}
@@ -257,7 +252,6 @@ looker.plugins.visualizations.add({
       />,
       element
     );
-    // We are done rendering! Let Looker know.
     done()
   }
 });

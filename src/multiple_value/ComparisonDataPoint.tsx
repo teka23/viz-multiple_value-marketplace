@@ -19,27 +19,29 @@ let ComparisonDataPointGroup = styled.div`
     text-decoration: none;
   }
 `
-const UpArrow = styled.div`
+const UpArrow = styled.div.attrs({
+  pos: (props: any) => props.pos,
+})`
   display: inline-block;
   width: 0; 
   height: 0; 
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 10px solid ${props =>
-    // @ts-ignore
     props.pos ? 'red' : 'green'
   };
   margin-right: 5px;
 `
 
-const DownArrow = styled.div`
+const DownArrow = styled.div.attrs({
+  pos: (props: any) => props.pos,
+})`
   display: inline-block;  
   width: 0; 
   height: 0; 
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 10px solid ${props =>
-    // @ts-ignore
     props.pos ? 'green' : 'red'
   };
   margin-right: 5px;
@@ -59,24 +61,25 @@ const ComparisonSimpleValue = styled.div`
     text-decoration: underline;
   }
 `
-const ComparisonProgressBar = styled.div`
+const ComparisonProgressBar = styled.div.attrs({
+  background: (props: any) => props.background,
+})`
   position: relative;
   background-color: ${props => 
-    // @ts-ignore
     props.background ? lighten(props.background, 60) : lighten("#282828", 80)
   };
   height: 40px;
   text-align: center;
 `
-
-const ComparisonProgressBarFilled = styled.div`
+const ComparisonProgressBarFilled = styled.div.attrs({
+  background: (props: any) => props.background,
+  pct: (props: any) => props.pct,
+})`
   background-color: ${props => 
-    // @ts-ignore
     props.background ? lighten(props.background, 45) : lighten("#282828", 60)
   };
   width: ${props => 
-    // @ts-ignore
-    Math.min(props.percentage || 0, 100)
+    props.pct
   }%;
   height: 40px;
 `
@@ -103,11 +106,21 @@ export const ComparisonDataPoint: React.FC<{
   progressPerc: number,
   handleClick: (i: any, j: any)=>{},
 }> = ({ config, compDataPoint, dataPoint, percChange, progressPerc, handleClick }) => {
+
+  function tryFormatting(formatString: string, value: number, defaultString: string) {
+    try {
+      return SSF.format(formatString, value)
+    }
+    catch(err) {
+      return defaultString
+    }
+  }
+
   return (
     <ComparisonDataPointGroup>
 
     {config[`comparison_style_${compDataPoint.name}`] !== 'percentage_change' ? null : (
-      <ComparisonPercentageChange value={percChange} onClick={() => { handleClick(compDataPoint, event) }}>
+      <ComparisonPercentageChange data-value={percChange} onClick={() => { handleClick(compDataPoint, event) }}>
         {percChange >= 0 ? <UpArrow pos={config[`pos_is_bad_${compDataPoint.name}`]}/> : <DownArrow pos={config[`pos_is_bad_${compDataPoint.name}`]}/>}
         {percChange >= 0 ? `+${percChange}` : percChange}%
       </ComparisonPercentageChange>
@@ -115,7 +128,7 @@ export const ComparisonDataPoint: React.FC<{
 
     {config[`comparison_style_${compDataPoint.name}`] !== 'value' ? null : 
     <ComparisonSimpleValue onClick={() => { handleClick(compDataPoint, event) }}>
-      {config[`comp_value_format_${compDataPoint.name}`] === "" ? compDataPoint.formattedValue : SSF.format(config[`comp_value_format_${compDataPoint.name}`], compDataPoint.value)}
+      {config[`comp_value_format_${compDataPoint.name}`] === "" ? compDataPoint.formattedValue : tryFormatting(config[`comp_value_format_${compDataPoint.name}`], compDataPoint.value, compDataPoint.formattedValue)}
     </ComparisonSimpleValue>}
 
     {config[`comparison_style_${compDataPoint.name}`] !== 'calculate_progress' &&
@@ -123,13 +136,13 @@ export const ComparisonDataPoint: React.FC<{
       <ComparisonProgressBar background={config[`style_${dataPoint.name}`]}>
         <ComparisonProgressBarFilled
           background={config[`style_${dataPoint.name}`]}
-          percentage={progressPerc}
+          pct={()=>Math.min(progressPerc || 0, 100)}
         />
           {config[`comparison_show_label_${compDataPoint.name}`] === false ? null : (
             <ComparisonProgressBarLabel><div onClick={() => { handleClick(compDataPoint, event) }}>
               {config[`comparison_style_${compDataPoint.name}`] === 'calculate_progress' ? null :
                 <>
-                  {`${progressPerc}% of ${config[`comp_value_format_${compDataPoint.name}`] === "" ? compDataPoint.formattedValue : SSF.format(config[`comp_value_format_${compDataPoint.name}`], compDataPoint.value)} `}
+                  {`${progressPerc}% of ${config[`comp_value_format_${compDataPoint.name}`] === "" ? compDataPoint.formattedValue : tryFormatting(config[`comp_value_format_${compDataPoint.name}`], compDataPoint.value, compDataPoint.formattedValue)} `}
                 </>
               }
               {config[`comparison_label_${compDataPoint.name}`] || compDataPoint.label}
