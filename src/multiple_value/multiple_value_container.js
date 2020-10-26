@@ -112,7 +112,7 @@ looker.plugins.visualizations.add({
           section: 'Style',
           order: 10 * index + 2,
         }
-        options[`title_overrride_${dataPoint.name}`] = {
+        options[`title_override_${dataPoint.name}`] = {
           type: 'string',
           label: `${dataPoint.label} - Title`,
           section: 'Style',
