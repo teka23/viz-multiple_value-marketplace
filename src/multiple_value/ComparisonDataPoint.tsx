@@ -122,7 +122,7 @@ export const ComparisonDataPoint: React.FC<{
     {config[`comparison_style_${compDataPoint.name}`] !== 'percentage_change' ? null : (
       <ComparisonPercentageChange data-value={percChange} onClick={() => { handleClick(compDataPoint, event) }}>
         {percChange >= 0 ? <UpArrow pos={config[`pos_is_bad_${compDataPoint.name}`]}/> : <DownArrow pos={config[`pos_is_bad_${compDataPoint.name}`]}/>}
-        {percChange >= 0 ? `+${percChange}` : percChange}%
+        {percChange}%
       </ComparisonPercentageChange>
     )}
 
