@@ -5,7 +5,7 @@ import {formatType, lighten} from '../common'
 import { ComparisonDataPoint } from './ComparisonDataPoint'
 
 const DataPointsWrapper = styled.div`
-  font-family: "Open Sans", "Noto Sans JP", "Noto Sans", "Noto Sans CJK KR", Helvetica, Arial, sans-serif;
+  font-family: "Google Sans", "Open Sans", "Noto Sans JP", "Noto Sans", "Noto Sans CJK KR", Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: ${props => props.layout === 'horizontal' ? 'row' : 'column'};
   align-items: center;
@@ -108,10 +108,10 @@ class MultipleValue extends React.PureComponent {
     const groupingLayout = window.innerWidth >= 768 ? 'horizontal' : 'vertical';
 
     let CONFIG = this.props.config;
-
-    console.log(CONFIG.font_size_main);
-
-    var font_size = (CONFIG.font_size_main != "" ? CONFIG.font_size_main : this.calculateFontSize());
+    
+    
+    var font_check = CONFIG.font_size_main
+    var font_size = (font_check !== "" && typeof font_check !== 'undefined' ? CONFIG.font_size_main : this.calculateFontSize());
     font_size = font_size / EM;
 
 
@@ -128,7 +128,7 @@ class MultipleValue extends React.PureComponent {
 
     return (
       <DataPointsWrapper
-        layout={config['orientation'] === 'auto' ? this.state.groupingLayout : config['orientation']}
+        layout={config['orientation'] === 'auto' || typeof config['orientation'] === 'undefined' ? this.state.groupingLayout : config['orientation']}
         font={config['grouping_font']}
         style={{fontSize: `${this.state.fontSize}em`}}
       >
@@ -146,7 +146,7 @@ class MultipleValue extends React.PureComponent {
               <DataPointGroup 
                 comparisonPlacement={compDataPoint && config[`comparison_label_placement_${compDataPoint.name}`]} 
                 key={`group_${dataPoint.name}`} 
-                layout={config['orientation'] === 'auto' ? this.state.groupingLayout : config['orientation']}
+                layout={config['orientation'] === 'auto' || typeof config['orientation'] === 'undefined' ? this.state.groupingLayout : config['orientation']}
               >
                 <DataPoint titlePlacement={config[`title_placement_${dataPoint.name}`]}>
                   {config[`show_title_${dataPoint.name}`] === false ? null : (
