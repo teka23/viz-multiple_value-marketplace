@@ -157,7 +157,7 @@ class MultipleValue extends React.PureComponent {
                   <DataPointValue 
                     color={config[`style_${dataPoint.name}`]}
                     onClick={() => { this.handleClick(dataPoint, event) }}
-                    layout={config['orientation'] === 'auto' ? this.state.groupingLayout : config['orientation']}
+                    layout={config['orientation'] === 'auto' || typeof config['orientation'] === 'undefined' ? this.state.groupingLayout : config['orientation']}
                   >
                     {dataPoint.formattedValue}
                   </DataPointValue>
