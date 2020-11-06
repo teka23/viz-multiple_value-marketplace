@@ -5,7 +5,7 @@ import {formatType, lighten} from '../common'
 import { ComparisonDataPoint } from './ComparisonDataPoint'
 
 const DataPointsWrapper = styled.div`
-  font-family: "Google Sans", "Open Sans", "Noto Sans JP", "Noto Sans", "Noto Sans CJK KR", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Noto Sans JP", "Noto Sans", "Noto Sans CJK KR", Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: ${props => props.layout === 'horizontal' ? 'row' : 'column'};
   align-items: center;
