@@ -84,6 +84,17 @@ class MultipleValue extends React.PureComponent {
     window.removeEventListener('resize', this.recalculateSizing);
   }
 
+  getLayout = () => {
+    let CONFIG = this.props.config
+    if(
+      CONFIG['orientation'] === 'auto' ||
+      typeof CONFIG['orientation'] === 'undefined'
+      ) { 
+        return this.state.groupingLayout 
+      } 
+    return CONFIG['orientation']
+  }
+
   getWindowSize = () => {
     return Math.max(window.innerWidth, window.innerHeight);
   }
@@ -128,7 +139,7 @@ class MultipleValue extends React.PureComponent {
 
     return (
       <DataPointsWrapper
-        layout={config['orientation'] === 'auto' || typeof config['orientation'] === 'undefined' ? this.state.groupingLayout : config['orientation']}
+        layout={this.getLayout()}
         font={config['grouping_font']}
         style={{fontSize: `${this.state.fontSize}em`}}
       >
@@ -146,7 +157,7 @@ class MultipleValue extends React.PureComponent {
               <DataPointGroup 
                 comparisonPlacement={compDataPoint && config[`comparison_label_placement_${compDataPoint.name}`]} 
                 key={`group_${dataPoint.name}`} 
-                layout={config['orientation'] === 'auto' || typeof config['orientation'] === 'undefined' ? this.state.groupingLayout : config['orientation']}
+                layout={this.getLayout()}
               >
                 <DataPoint titlePlacement={config[`title_placement_${dataPoint.name}`]}>
                   {config[`show_title_${dataPoint.name}`] === false ? null : (
@@ -157,7 +168,7 @@ class MultipleValue extends React.PureComponent {
                   <DataPointValue 
                     color={config[`style_${dataPoint.name}`]}
                     onClick={() => { this.handleClick(dataPoint, event) }}
-                    layout={config['orientation'] === 'auto' || typeof config['orientation'] === 'undefined' ? this.state.groupingLayout : config['orientation']}
+                    layout={this.getLayout()}
                   >
                     {dataPoint.formattedValue}
                   </DataPointValue>

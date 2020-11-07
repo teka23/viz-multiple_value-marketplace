@@ -32,7 +32,11 @@ var webpackConfig = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: 'css-loader',
+      },
+      {
+        test: /\.woff$/,
+        use: 'url-loader'
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
