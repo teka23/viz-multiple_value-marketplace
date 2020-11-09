@@ -27,20 +27,23 @@ var webpackConfig = {
       { test: /\.(js|jsx)$/, use: "babel-loader"},
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        loader: "ts-loader",
         exclude: /node_modules/
       },
       {
         test: /\.css$/i,
-        use: 'css-loader',
+        use: [
+          { loader: 'style-loader', options: { injectType: 'lazyStyleTag' } },
+          'css-loader',
+        ],
       },
       {
-        test: /\.woff$/,
-        use: 'url-loader'
+        test: /\.(woff|woff2|ttf|otf)$/,
+        loader: 'url-loader',
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
-        use: 'file-loader',
+        loader: 'file-loader',
       },
     ]
   },
