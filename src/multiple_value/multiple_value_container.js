@@ -55,6 +55,11 @@ looker.plugins.visualizations.add({
       queryResponse.fields.table_calculations
     )
 
+    if(data.length < 1) {
+      this.addError({title: "No Results"})
+      done();
+    }
+
     if (measures.length == 0) {
       this.addError({title: "No Measures", message: "This chart requires measures"});
       return;
