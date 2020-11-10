@@ -49,6 +49,7 @@
     "js-yaml": "3.13.1"
   },
   "devDependencies": {
-    "babel-plugin-styled-components": "^1.10.7"
+    "babel-plugin-styled-components": "^1.10.7",
+    "style-loader": "^2.0.0"
   }
 }
