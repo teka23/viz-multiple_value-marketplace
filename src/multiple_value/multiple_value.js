@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { ComparisonDataPoint } from './ComparisonDataPoint'
 
 const DataPointsWrapper = styled.div`
-  font-family: "Open Sans", "Noto Sans JP", "Noto Sans", "Noto Sans CJK KR", Helvetica, Arial, sans-serif;
+  font-family: "Google Sans", "Roboto", "Noto Sans JP", "Noto Sans", "Noto Sans CJK KR", Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: ${props => props.layout === 'horizontal' ? 'row' : 'column'};
   align-items: center;
