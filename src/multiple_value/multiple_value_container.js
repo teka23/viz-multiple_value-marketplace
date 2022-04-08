@@ -32,19 +32,22 @@ const baseOptions = {
 let currentOptions = {}
 let currentConfig = {}
 
+const renderBlankVisualization = (element) => {
+  ReactDOM.render(
+    <MultipleValue
+      config={{}}
+      data={[]}
+    />,
+    element
+  );
+}
+
 looker.plugins.visualizations.add({
   id: "multiple_value",
   label: "Multiple Value",
   options: baseOptions,
   create: function(element, config) {
-    this.chart = ReactDOM.render(
-      <MultipleValue
-        config={{}}
-        data={[]}
-      />,
-      element
-    );
-
+    this.chart = renderBlankVisualization(element)
   },
   updateAsync: function(data, element, config, queryResponse, details, done) {
     this.clearErrors();
@@ -57,7 +60,9 @@ looker.plugins.visualizations.add({
 
     if(data.length < 1) {
       this.addError({title: "No Results"})
+      this.chart = renderBlankVisualization(element)
       done();
+      return;
     }
 
     if (measures.length == 0) {
