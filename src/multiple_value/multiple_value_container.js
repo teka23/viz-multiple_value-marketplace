@@ -89,7 +89,8 @@ looker.plugins.visualizations.add({
         value: firstRow[measure.name].value,
         link: firstRow[measure.name].links,
         valueFormat: config[`value_format`],
-        formattedValue: config[`value_format_${measure.name}`] === "" || config[`value_format_${measure.name}`] === undefined ? LookerCharts.Utils.textForCell(firstRow[measure.name]) : SSF.format(config[`value_format_${measure.name}`], firstRow[measure.name].value)
+        formattedValue: config[`value_format_${measure.name}`] === "" || config[`value_format_${measure.name}`] === undefined ? LookerCharts.Utils.textForCell(firstRow[measure.name]) : SSF.format(config[`value_format_${measure.name}`], firstRow[measure.name].value),
+        html: firstRow[measure.name].html
       })
     });
 
