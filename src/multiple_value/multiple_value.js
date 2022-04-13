@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { ComparisonDataPoint } from './ComparisonDataPoint'
 import ReactHtmlParser from 'react-html-parser';
+import DOMPurify from 'dompurify';
 
 
 const DataPointsWrapper = styled.div`
@@ -169,7 +170,7 @@ class MultipleValue extends React.PureComponent {
                     onClick={() => { this.handleClick(dataPoint, event) }}
                     layout={this.getLayout()}
                   >                  
-                  { dataPoint.html ? ReactHtmlParser(dataPoint.html) : dataPoint.formattedValue } 
+                  { dataPoint.html ? ReactHtmlParser(DOMPurify.sanitize(dataPoint.html)) : dataPoint.formattedValue  } 
                   </DataPointValue>
                 </DataPoint>
                 {!compDataPoint ? null : (
