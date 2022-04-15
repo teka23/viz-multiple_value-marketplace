@@ -32,13 +32,14 @@ const baseOptions = {
 let currentOptions = {}
 let currentConfig = {}
 
-const renderBlankVisualization = (element) => {
+const renderBlankVisualization = (element, done) => {
   ReactDOM.render(
     <MultipleValue
       config={{}}
       data={[]}
     />,
-    element
+    element,
+    done 
   );
 }
 
@@ -47,7 +48,7 @@ looker.plugins.visualizations.add({
   label: "Multiple Value",
   options: baseOptions,
   create: function(element, config) {
-    this.chart = renderBlankVisualization(element)
+    this.chart = renderBlankVisualization(element, () => {})
   },
   updateAsync: function(data, element, config, queryResponse, details, done) {
     this.clearErrors();
@@ -60,8 +61,7 @@ looker.plugins.visualizations.add({
 
     if(data.length < 1) {
       this.addError({title: "No Results"})
-      this.chart = renderBlankVisualization(element)
-      done();
+      this.chart = renderBlankVisualization(element, done)
       return;
     }
 
@@ -89,7 +89,8 @@ looker.plugins.visualizations.add({
         value: firstRow[measure.name].value,
         link: firstRow[measure.name].links,
         valueFormat: config[`value_format`],
-        formattedValue: config[`value_format_${measure.name}`] === "" || config[`value_format_${measure.name}`] === undefined ? LookerCharts.Utils.textForCell(firstRow[measure.name]) : SSF.format(config[`value_format_${measure.name}`], firstRow[measure.name].value)
+        formattedValue: config[`value_format_${measure.name}`] === "" || config[`value_format_${measure.name}`] === undefined ? LookerCharts.Utils.textForCell(firstRow[measure.name]) : SSF.format(config[`value_format_${measure.name}`], firstRow[measure.name].value),
+        html: firstRow[measure.name].html
       })
     });
 

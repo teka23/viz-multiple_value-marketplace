@@ -2,6 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { ComparisonDataPoint } from './ComparisonDataPoint'
+import ReactHtmlParser from 'react-html-parser';
+import DOMPurify from 'dompurify';
+
 
 const DataPointsWrapper = styled.div`
   font-family: "Google Sans", "Roboto", "Noto Sans JP", "Noto Sans", "Noto Sans CJK KR", Helvetica, Arial, sans-serif;
@@ -166,8 +169,8 @@ class MultipleValue extends React.PureComponent {
                     color={config[`style_${dataPoint.name}`]}
                     onClick={() => { this.handleClick(dataPoint, event) }}
                     layout={this.getLayout()}
-                  >
-                    {dataPoint.formattedValue}
+                  >                  
+                  { dataPoint.html ? ReactHtmlParser(DOMPurify.sanitize(dataPoint.html)) : dataPoint.formattedValue  } 
                   </DataPointValue>
                 </DataPoint>
                 {!compDataPoint ? null : (
