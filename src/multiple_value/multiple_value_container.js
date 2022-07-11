@@ -167,6 +167,7 @@ looker.plugins.visualizations.add({
             label: `${dataPoint.label} - Style`,
             values: [
               {'Show as Value': 'value'},
+              {'Show as Value Change': 'value_change'},
               {'Show as Percentage Change': 'percentage_change'},
               {'Calculate Progress': 'calculate_progress'},
               {'Calculate Progress (with Percentage)': 'calculate_progress_perc'},
@@ -180,9 +181,9 @@ looker.plugins.visualizations.add({
             label: `${dataPoint.label} - Show Label`,
             section: 'Comparison',
             default: true,
-            order: 10 * index + 3,
+            order: 10 * index + 4,
           }
-          if (config[`comparison_style_${dataPoint.name}`] === "percentage_change") {
+          if (config[`comparison_style_${dataPoint.name}`] === "value_change") {
             options[`pos_is_bad_${dataPoint.name}`] = {
               type: 'boolean',
               label: `Positive Values are Bad`,
@@ -191,13 +192,22 @@ looker.plugins.visualizations.add({
               order: 10 * index + 2,
             }
           }
+          if (config[`comparison_style_${dataPoint.name}`] === "percentage_change") {
+            options[`pos_is_bad_${dataPoint.name}`] = {
+              type: 'boolean',
+              label: `Positive Values are Bad`,
+              section: 'Comparison',
+              default: false,
+              order: 10 * index + 3,
+            }
+          }
           if (config[`comparison_show_label_${dataPoint.name}`]) {
             options[`comparison_label_${dataPoint.name}`] = {
               type: 'string',
               label: `${dataPoint.label} - Label`,
               placeholder: dataPoint.label,
               section: 'Comparison',
-              order: 10 * index + 4,
+              order: 10 * index + 5,
             }
             options[`comparison_label_placement_${dataPoint.name}`] = {
               type: 'string',
@@ -211,7 +221,7 @@ looker.plugins.visualizations.add({
               ],
               default: 'below',
               section: 'Comparison',
-              order: 10 * index + 5,
+              order: 10 * index + 6,
             }
             if (config[`comparison_style_${dataPoint.name}`] === "value" ||
                 config[`comparison_style_${dataPoint.name}`] === "calculate_progress_perc") {
@@ -221,7 +231,7 @@ looker.plugins.visualizations.add({
                 placeholder: "Spreadsheet-style format code",
                 section: 'Comparison',
                 default: "",
-                order: 10 * index + 6
+                order: 10 * index + 7
               }
             }
           }

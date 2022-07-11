@@ -103,9 +103,10 @@ export const ComparisonDataPoint: React.FC<{
   compDataPoint: any,
   dataPoint: any,
   percChange: number,
+  valueChange: number,
   progressPerc: number,
   handleClick: (i: any, j: any)=>{},
-}> = ({ config, compDataPoint, dataPoint, percChange, progressPerc, handleClick }) => {
+}> = ({ config, compDataPoint, dataPoint, percChange, valueChange, progressPerc, handleClick }) => {
 
   function tryFormatting(formatString: string, value: number, defaultString: string) {
     try {
@@ -123,6 +124,12 @@ export const ComparisonDataPoint: React.FC<{
       <ComparisonPercentageChange data-value={percChange} onClick={() => { handleClick(compDataPoint, event) }}>
         {percChange >= 0 ? <UpArrow pos={config[`pos_is_bad_${compDataPoint.name}`]}/> : <DownArrow pos={config[`pos_is_bad_${compDataPoint.name}`]}/>}
         {percChange}%
+      </ComparisonPercentageChange>
+    )}
+    {config[`comparison_style_${compDataPoint.name}`] !== 'value_change' ? null : (
+      <ComparisonPercentageChange data-value={valueChange} onClick={() => { handleClick(compDataPoint, event) }}>
+        {valueChange >= 0 ? <UpArrow pos={config[`pos_is_bad_${compDataPoint.name}`]}/> : <DownArrow pos={config[`pos_is_bad_${compDataPoint.name}`]}/>}
+        {valueChange.toLocaleString('en-US')}
       </ComparisonPercentageChange>
     )}
 
