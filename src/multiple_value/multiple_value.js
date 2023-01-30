@@ -148,9 +148,12 @@ class MultipleValue extends React.PureComponent {
             const compDataPoint = dataPoint.comparison
             let progressPerc
             let percChange
+            let valueChange
             if (compDataPoint) {
               progressPerc = Math.round((dataPoint.value / compDataPoint.value) * 100)
               percChange = progressPerc - 100
+
+              valueChange = dataPoint.value - compDataPoint.value
             }
             return (
               <>
@@ -179,6 +182,7 @@ class MultipleValue extends React.PureComponent {
                   compDataPoint={compDataPoint}
                   dataPoint={dataPoint}
                   percChange={percChange}
+                  valueChange={valueChange}
                   progressPerc={progressPerc}
                   handleClick={this.handleClick}
                 />)}
