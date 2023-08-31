@@ -26,6 +26,17 @@ Great! Marketplace content -- including visualizations -- were designed for cont
     ```
     Your compiled code can be found in this repo.
 
+4. **Running unit tests**
+
+   ```shell
+   yarn test
+   ```
+
+   or
+
+   ```shell
+   bin/test
+
 **`multiple_value.js`**: This visualization's minified distribution file. 
 
 **`LICENSE`**: Looker's Marketplace content License file.
