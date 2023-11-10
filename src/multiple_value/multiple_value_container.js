@@ -2,32 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import isEqual from 'lodash/isEqual';
 import MultipleValue from './multiple_value';
-import SSF from 'ssf';
-
-const baseOptions = {
-  font_size_main: {
-    label: 'Font Size',
-    type: 'string',
-    section: 'Style',
-    default: '',
-    order: 0,
-    display_size: 'half',
-  },
-  orientation: {
-    label: 'Orientation',
-    type: 'string',
-    section: 'Style',
-    display: 'select',
-    values: [
-      {Auto: 'auto'},
-      {Vertical: 'vertical'},
-      {Horizontal: 'horizontal'},
-    ],
-    default: 'auto',
-    order: 0,
-    display_size: 'half',
-  },
-};
+import {formatValue} from '../functions/number_date_format';
+import {PLOT_CONFIG} from '../constants/plot_config';
 
 let currentOptions = {};
 let currentConfig = {};
@@ -39,7 +15,7 @@ const renderBlankVisualization = (element, done) => {
 looker.plugins.visualizations.add({
   id: 'multiple_value',
   label: 'Multiple Value',
-  options: baseOptions,
+  options: PLOT_CONFIG,
   create: function (element, config) {
     this.chart = renderBlankVisualization(element, () => {});
   },
@@ -96,9 +72,10 @@ looker.plugins.visualizations.add({
           config[`value_format_${measure.name}`] === '' ||
           config[`value_format_${measure.name}`] === undefined
             ? LookerCharts.Utils.textForCell(firstRow[measure.name])
-            : SSF.format(
+            : formatValue(
                 config[`value_format_${measure.name}`],
-                firstRow[measure.name].value
+                firstRow[measure.name].value,
+                queryResponse.number_format
               ),
         html: firstRow[measure.name].html,
       };
