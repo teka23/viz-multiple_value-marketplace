@@ -158,10 +158,15 @@ class MultipleValue extends React.PureComponent {
           let percChange;
           let valueChange;
           if (compDataPoint) {
-            progressPerc = Math.round(
-              (dataPoint.value / compDataPoint.value) * 100
-            );
-            percChange = progressPerc - 100;
+            if (compDataPoint.value == 0) {
+              progressPerc = 0;
+              percChange = 0;
+            } else {
+              progressPerc = Math.round(
+                (dataPoint.value / compDataPoint.value) * 100
+              );
+              percChange = progressPerc - 100;
+            }
 
             valueChange = dataPoint.value - compDataPoint.value;
           }
